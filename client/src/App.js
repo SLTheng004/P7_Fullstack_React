@@ -50,7 +50,7 @@ function App() {
             { !authState.status ? (
               <>
               <NavLink to="/login">Login </NavLink>
-              <NavLink to="/registration">Create New Account </NavLink>
+              <NavLink to="/registration">Signup</NavLink>
               </>
               ) : ( 
                 <>
