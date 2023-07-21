@@ -1,0 +1,116 @@
+.App {
+    width: 100vw;
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+   }
+ 
+ .link {
+   margin-top: 40px;
+   padding: 10px;
+   text-decoration: none;
+   font-size: 20px;
+   font-family: Arial, Helvetica, sans-serif;
+   color: white;
+   background-color: #007BA7;
+   border: 2px solid #007BA7;
+ }
+   
+ body {
+   width: 100vw;
+   height: auto;
+   background-color: #FEFEFA;
+   margin: 0;
+   padding: 0;
+ }
+   
+ .post {
+   background-color: white;
+   width: 90%;
+   height: 100%;
+   border-radius: 6px 6px 0 0;
+   display: flex;
+   flex-direction: column;
+   margin-top: 60px;
+   border: 1px solid #007BA7;
+   font-family: Arial, Helvetica, sans-serif;
+   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+ }
+   
+ .post:hover {
+   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 30px 0px;
+   cursor: pointer;
+ }
+ 
+ .post .title {
+   flex: 20%;
+   border-radius: 5px 5px 0 0;
+   border-bottom: 1px solid #007BA7;
+   background-color: #007BA7;
+   display: grid;
+   padding: 8px 15px;
+   align-items: center;
+   color: white;
+ }
+   
+ .post .postText{
+   flex: 60%;
+   display: grid;
+   padding: 25px 15px;
+ }
+   
+ .post .username {
+   font-size: 14px;
+   border-top: 1px solid #007BA7;
+   background-color: #007BA7;
+   flex: 20%;
+   display: flex;
+   align-items: center;
+   padding: 5px 15px;
+   color: white;
+ }
+ 
+ .userContainer {
+   display: flex;
+ }
+ 
+ .userContainer button {
+   border: none;
+   background-color: #007ba7;
+   height: 100%;
+   color: white;
+   cursor: pointer;
+ }
+ 
+ .userContainer button:hover {
+   color: black;
+ }
+ 
+ .likeContainer {
+   display: flex;
+ }
+ 
+ .likeContainer label {
+   padding: 6px;
+   background-color: #007ba7;
+   font-family: Arial, Helvetica, sans-serif;
+   color: white;
+ }
+ 
+ .unlikeBtn {
+   color: #353839;
+   background-color: #007ba7;
+   padding: 2px;
+ }
+ 
+ .likeBtn {
+   color: white;
+   background-color: #007ba7;
+   padding: 2px;
+ }
+ 
+ @media only screen and (min-width: 600px) {
+     .post {
+       width: 60%;
+     }
+   }

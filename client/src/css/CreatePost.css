@@ -1,0 +1,51 @@
+
+
+body {
+    background-color: #FEFEFA;
+}
+
+.formContainer {
+    margin-top: 50px;
+    border: 2px solid #007BA7;
+    padding: 30px;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: -15px;
+    padding-bottom: 25px;
+}
+
+.createPostPage {
+    display: flex;
+    flex-direction: column;
+}
+
+.formContainer, label {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#inputCreatePost {
+    padding:10px;
+    font-size:16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#aaa;
+    border:solid 1px #ccc;
+    margin:0 0 20px;
+    width:300px;
+}
+
+.createPostButton {
+    border:solid 1px #ccc;
+    padding:15px 30px;
+    margin:0 0 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-transform:uppercase;
+    font-weight:bold;
+    color:white;
+    background-color: #007BA7;
+    cursor:pointer;
+}

@@ -1,0 +1,45 @@
+
+
+body {
+    background-color: #FEFEFA;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: -15px;
+    padding-bottom: 25px;
+}
+
+.createAccountPage {
+    display: flex;
+    flex-direction: column;
+}
+
+label, .formContainer{
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.inputCreateUsername {
+    padding:10px;
+    font-size:16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#aaa;
+    border:solid 1px #ccc;
+    margin:0 0 20px;
+    width:300px;
+}
+
+.createAccountButton {
+    border:solid 1px #ccc;
+    padding:15px 30px;
+    margin:0 0 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-transform:uppercase;
+    font-weight:bold;
+    color:white;
+    background-color: #007BA7;
+    cursor:pointer;
+}
