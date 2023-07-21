@@ -14,10 +14,15 @@ function Registration() {
     
       const validationSchema = Yup.object().shape({
         username: Yup.string().min(3).max(15).required('username cannot be left blank'),
-        password: Yup.string().min(4).max(20).required('password cannot be left blank!')
+        password: Yup.string().min(4).max(20)
+        .matches(/[0-9]/, 'Password requires a number')
+        .matches(/[a-z]/, 'Password requires a lowercase letter')
+        .matches(/[A-Z]/, 'Password requires an uppercase letter')
+        .required('password cannot be left blank'),
       });
 
-      const onSubmit = (data) => {
+
+      const createAccount = (data) => {
         axios.post('http://localhost:4000/auth', data).then(() => {
           navigate('/');
         })
@@ -27,7 +32,7 @@ function Registration() {
     <div className="createAccountPage">
         <Formik
         initialValues={initialValues}
-        onSubmit={onSubmit}
+        onSubmit={createAccount}
         validationSchema={validationSchema}>
         <Form className="formContainer">
           <label>Username: </label>
@@ -46,7 +51,7 @@ function Registration() {
           <ErrorMessage name="password" component="span" className="errorMessage" />
 
 
-          <button type="submit" className="createAccountButton"> Create Account</button>
+          <button type="submit" className="createAccountButton" onSubmit={createAccount}> Create Account</button>
         </Form>
       </Formik>
     </div>
