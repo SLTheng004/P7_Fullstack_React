@@ -35,18 +35,19 @@ function Registration() {
         onSubmit={createAccount}
         validationSchema={validationSchema}>
         <Form className="formContainer">
-          <label>Username: </label>
+          <h1>Create Account</h1>
           <Field
             className="inputCreateUsername"
             name="username"
+            placeholder= "username..."
             autoComplete="off"/>
           <ErrorMessage name="username" component="span" className="errorMessage"  />
 
-          <label>Password: </label>
           <Field
             type="password"
             className="inputCreateUsername"
             name="password"
+            placeholder= "password..."
             autoComplete="off"/>
           <ErrorMessage name="password" component="span" className="errorMessage" />
 
