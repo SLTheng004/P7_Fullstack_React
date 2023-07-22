@@ -25,8 +25,8 @@ function Registration() {
       const createAccount = (data) => {
         axios.post('http://localhost:4000/auth/signup', data).then(() => {
             navigate('/');
-        })
-          }
+        });
+          };
 
   return (
     <div className="createAccountPage">
