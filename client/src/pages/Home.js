@@ -17,7 +17,8 @@ function Home() {
         if (!localStorage.getItem("accessToken")) {
             navigate('/login');
         } else {
-            axios.get('http://localhost:4000/posts',{  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
+            axios.get('http://localhost:4000/posts',
+            {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
                 setListOfPosts(response.data.listOfPosts);
                 setLikedPosts(response.data.likedPosts.map((like) => {
                     return like.PostId;

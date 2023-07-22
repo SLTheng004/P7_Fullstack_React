@@ -4,7 +4,6 @@ import { AuthContext } from '../helpers/AuthContext';
 import axios from 'axios';
 
 function Profile({logout}) {
-    const [postObject, setPostObject] = useState({});
     const { authState } = useContext(AuthContext);
     let navigate = useNavigate();
     
@@ -25,6 +24,7 @@ function Profile({logout}) {
 
   return (
     <div>
+      <p>Settings:</p>
       <button onClick={ onDelete }>Delete Account</button>
     </div>
   )

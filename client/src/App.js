@@ -20,6 +20,7 @@ function App() {
     status: false,
   });
 
+  
   useEffect(() => {
     axios.get('http://localhost:4000/auth/user', { headers: {
       accessToken: localStorage.getItem('accessToken'),

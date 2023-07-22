@@ -7,6 +7,7 @@ import '../css/Post.css';
 
 
 function Post() {
+  let navigate = useNavigate();
   let { id } = useParams();
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
@@ -58,12 +59,32 @@ function Post() {
       });
   };
 
+
+  const deletePost = (id) => {
+    axios
+      .delete(`http://localhost:4000/posts/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        navigate("/");
+      });
+  };
+
   return (
     <div className="postPage"> 
         <div className="postContainer">
         <div className="title"> {postObject.title} </div>
         <div className="postText">{ postObject.postText }</div>
-          <div className="username">{postObject.username}</div>
+          <div className="username">
+            {postObject.username}
+            <button
+                onClick={() => {
+                  deletePost(postObject.id);
+                }}
+              >
+                {" "}
+                Delete Post
+              </button></div>
         </div>
         <div className="commentContainer">
             <div className="addComment">
