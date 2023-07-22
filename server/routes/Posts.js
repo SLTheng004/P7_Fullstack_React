@@ -16,13 +16,21 @@ router.get('/byId/:id', async (req, res) => {
     res.json(post);
 });
 
-router.post('/', validateToken, multer, async (req, res) => {
-    const post = ({
-        imageUrl: url + '/images/' + req.file.filename,
-        username: req.user.username,
-    })
+router.post('/', validateToken, async (req, res) => {
+    const post = req.body;
+    post.username = req.user.username; 
     await Posts.create(post);
     res.json(post);
 });
+
+
+// router.post('/', validateToken, multer, async (req, res) => {
+//     const post = ({
+//         imageUrl: url + '/images/' + req.file.filename,
+//         username: req.user.username,
+//     })
+//     await Posts.create(post);
+//     res.json(post);
+// });
 
 module.exports = router;
