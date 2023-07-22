@@ -6,7 +6,7 @@ const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middleware/Auth')
 
 //registration
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, password } = req.body;
   bcrypt.hash(password, 1000).then((hash) => {
     Users.create({

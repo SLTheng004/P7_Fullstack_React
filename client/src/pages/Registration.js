@@ -23,10 +23,10 @@ function Registration() {
 
 
       const createAccount = (data) => {
-        axios.post('http://localhost:4000/auth', data).then(() => {
-          navigate('/');
+        axios.post('http://localhost:4000/auth/signup', data).then(() => {
+            navigate('/');
         })
-      }
+          }
 
   return (
     <div className="createAccountPage">
@@ -51,7 +51,7 @@ function Registration() {
           <ErrorMessage name="password" component="span" className="errorMessage" />
 
 
-          <button type="submit" className="createAccountButton" onSubmit={createAccount}> Create Account</button>
+          <button type="submit" className="createAccountButton" > Create Account</button>
         </Form>
       </Formik>
     </div>

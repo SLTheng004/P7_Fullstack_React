@@ -27,7 +27,7 @@ function Login() {
           status: true});
         navigate('/');
       }
-    })
+    });
   };
   return (
     <div className="loginContainer">
