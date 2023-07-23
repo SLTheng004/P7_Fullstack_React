@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate} from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import '../css/Registration.css';
 import axios from 'axios';
+import { AuthContext } from '../helpers/AuthContext';
+
 
 function Registration() {
+    const { setAuthState } = useContext(AuthContext);
     let navigate = useNavigate();
     const initialValues = {
         username: "",
@@ -23,9 +26,18 @@ function Registration() {
 
 
       const createAccount = (data) => {
-        axios.post('http://localhost:4000/auth/signup', data).then(() => {
+        axios.post('http://localhost:4000/auth/signup', data).then((response) => {
+          if (response.data.error) {
+            alert(response.data.error)
+          } else { 
+            localStorage.setItem('accessToken', response.data.token);
+            setAuthState({
+              username: response.data.username, 
+              id: 0, 
+              status: true});
             navigate('/');
-        });
+            }
+          })
       };
 
   return (

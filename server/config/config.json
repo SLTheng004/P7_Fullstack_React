@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "sqluser",
+    "username": "root",
     "password": "password",
     "database": "P7_Samantha_Theng",
     "host": "localhost",

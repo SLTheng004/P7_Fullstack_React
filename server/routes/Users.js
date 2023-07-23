@@ -17,10 +17,10 @@ router.post('/signup', async (req, res) => {
               message: 'User added successfully!'
           });
       }).catch((error) => {
-          res.status(500).json({
-              error: error
+          res.status(400).json({
+              error
           });
-      })
+      });
     });
 });
 
@@ -32,28 +32,32 @@ router.post('/login', async (req, res) => {
     if (!user) { res.json({ error: 'User does not exist' })}
     else {
       bcrypt.compare(password, user.password).then((match) => {
-        if (!match) {res.json({ error: 'Wrong username and password combination' })}
+        if (!match) {
+          return res.status(401).json({
+            error: new Error('Incorrect password!')
+          })}
         else {
           const accessToken = sign(
             { username: user.username, id: user.id }, 
-            'supersecret' 
+            'supersecret', 
             ).then(() => {
               res.json({token: accessToken, username: username, id: user.id}); 
             }).catch((error) => {
               res.status(500).json({
-                error: error
+                error
             });
-            })
+          });
         }
       });
     };
 });
 
-//checks to see if auth
+//checks to see if auth to go into profile
 router.get('/user', validateToken, (req, res) => {
   res.json(req.user);
-})
+});
 
+//deletes user
 router.delete('/user/:id', validateToken, async (req, res) => {
   const userId = req.params.id;
 
@@ -63,7 +67,9 @@ router.delete('/user/:id', validateToken, async (req, res) => {
       },
   }).then(() => {
       res.status(200).json({message: 'Account Deleted'}) 
-  }).catch((error) => res.status(400).json({ error }));
+  }).catch((error) => {
+    res.status(400).json({ error });
+  });
 });
 
 
