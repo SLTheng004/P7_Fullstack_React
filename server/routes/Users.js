@@ -17,9 +17,7 @@ router.post('/signup', async (req, res) => {
               message: 'User added successfully!'
           });
       }).catch((error) => {
-          res.status(400).json({
-              error
-          });
+        res.status(400).json({error:error});
       });
     });
 });
@@ -43,9 +41,7 @@ router.post('/login', async (req, res) => {
             ).then(() => {
               res.json({token: accessToken, username: username, id: user.id}); 
             }).catch((error) => {
-              res.status(500).json({
-                error
-            });
+              res.status(400).json({error:error});
           });
         }
       });
@@ -68,7 +64,7 @@ router.delete('/user/:id', validateToken, async (req, res) => {
   }).then(() => {
       res.status(200).json({message: 'Account Deleted'}) 
   }).catch((error) => {
-    res.status(400).json({ error });
+    res.status(400).json({error:error});
   });
 });
 

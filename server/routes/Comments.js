@@ -9,7 +9,7 @@ router.get('/:postId', async (req, res) => {
     const comments = await Comments.findAll({ where: { PostId: postId }}).then(() => {
         res.json(comments);
     }).catch((error) => {
-        res.status(400).json(error);
+        res.status(400).json({error:error});
     });
 });
 
@@ -21,7 +21,7 @@ router.post('/', validateToken, async (req,res) => {
     await Comments.create(comment).then(() => {
         res.json(comment);
     }).catch((error) => {
-        res.status(400).json(error);
+        res.status(400).json({error:error});
     });
 });
 
@@ -36,7 +36,7 @@ router.delete('/:commentId', validateToken, async (req, res) => {
     }).then(() => {
         res.json("Comment Deleted") 
     }).catch((error) => {
-        res.status(400).json(error);
+        res.status(400).json({error:error});
     });
 });
 

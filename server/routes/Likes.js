@@ -15,7 +15,7 @@ router.post('/', validateToken, async (req, res) => {
         await Likes.create({ PostId: PostId, UserId: UserId }).then(() => {
             res.json({liked: true});
         }).catch((error) => {
-            res.status(400).json(error);
+            res.status(400).json({error:error});
         })
     } else {
         await Likes.destroy({ 
@@ -23,8 +23,8 @@ router.post('/', validateToken, async (req, res) => {
          }).then(() => {
             res.json({liked: false});
          }).catch((error) => {
-            res.status(400).json(error);
-         })    
+            res.status(400).json({error:error});
+        })    
     }
 });
 
