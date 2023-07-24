@@ -34,7 +34,7 @@ router.delete('/:commentId', validateToken, async (req, res) => {
             id: commentId,
         },
     }).then(() => {
-        res.json("Comment Deleted") 
+        res.json({message: "Comment Deleted"}); 
     }).catch((error) => {
         res.status(400).json({error:error});
     });

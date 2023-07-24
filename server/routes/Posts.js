@@ -6,9 +6,13 @@ const { multerConfig } = require('../middleware/Multer');
 
 //get list of post and list of likes - for home page
 router.get('/', validateToken, async (req, res) => {
-    const listOfPosts = await Posts.findAll({ include: [Likes] })
+    const listOfPosts = await Posts.findAll({ include: [Likes] });
     const likedPosts = await Likes.findAll({where: {UserId: req.user.id}})
-    res.status(200).json({listOfPosts: listOfPosts, likedPosts: likedPosts});
+    .then(() => {
+      res.status(200).json({listOfPosts: listOfPosts, likedPosts: likedPosts});
+    }).catch((error) => {
+      res.status(400).json({error:error});    
+    });
 });
 
 //get post by id when clicking specific post
