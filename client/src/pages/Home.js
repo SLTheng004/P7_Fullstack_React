@@ -7,7 +7,7 @@ import '../css/Home.css';
 
 
 function Home() {
-    const [showReadIcon, setReadIcon] = useState(true);
+    const [hideReadIcon, setReadIcon] = useState(true);
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     let navigate = useNavigate();
@@ -19,17 +19,16 @@ function Home() {
         } else {
             axios.get('http://localhost:4000/posts',
             {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
-                setListOfPosts(response.data.listOfPosts);
+                setListOfPosts(response.data.listOfPosts.reverse());
                 setLikedPosts(response.data.likedPosts.map((like) => {
                     return like.PostId;
-                }
-                ));
+                }));
             });
         }
     }, []);
 
     const toggleRead = () => {
-        setReadIcon(!showReadIcon);
+        setReadIcon(!hideReadIcon);
         };
 
     const likePost = (postId) => {
@@ -65,11 +64,11 @@ function Home() {
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
-            <div className="post" > 
+            <div className="post" key={key}> 
                 <div className='titleContainer'> 
                 <div className='title'>{value.title}</div>
                     <div className='read'>
-                    {showReadIcon &&
+                    {hideReadIcon &&
                         <> 
                         <FiberNewIcon 
                         id='fiberNewIcon'
