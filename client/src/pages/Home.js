@@ -7,7 +7,7 @@ import '../css/Home.css';
 
 
 function Home() {
-    const [hideReadIcon, setReadIcon] = useState(true);
+    // const [newPostNotif, setNewPostNotif] = useState([]);
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     let navigate = useNavigate();
@@ -20,16 +20,13 @@ function Home() {
             axios.get('http://localhost:4000/posts',
             {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
                 setListOfPosts(response.data.listOfPosts.reverse());
+                // setNewPostNotif(response.data.newPostNotif)
                 setLikedPosts(response.data.likedPosts.map((like) => {
                     return like.PostId;
                 }));
             });
         }
     }, []);
-
-    const toggleRead = () => {
-        setReadIcon(!hideReadIcon);
-        };
 
     const likePost = (postId) => {
         axios.post('http://localhost:4000/likes',
@@ -60,48 +57,73 @@ function Home() {
             }
         });
     };
-  
+
+    // const readPost = (postId) => {
+    //     axios.post('http://localhost:4000/read',
+    //      {  PostId: postId }, 
+    //      {  headers: { accessToken: localStorage.getItem('accessToken') }}
+    //     ).then((response) => {
+    //         //update if read automatically
+    //         setListOfPosts(newPostNotif.map((post) => {
+    //             if (post.id === postId) {
+    //                 if (response.data.read) {
+    //                     return {...post, NewPostNotif: [...post.NewPostNotif, 0] };
+    //                 } else {
+    //                     const readArray = post.NewPostNotif;
+    //                     readArray.pop();
+    //                     return {...post, NewPostNotif: readArray };
+    //                 }
+    //             } else {
+    //                 setNewPostNotif([...newPostNotif, postId])
+    //                 return post;
+    //             }
+    //         }));
+    //     });
+    // }  
+
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
-            <div className="post" key={key}> 
-                <div className='titleContainer'> 
-                <div className='title'>{value.title}</div>
-                    <div className='read'>
-                    {hideReadIcon &&
-                        <> 
-                        <FiberNewIcon 
-                        id='fiberNewIcon'
-                        style={{ fontSize: '2rem', height: '30px' }}
-                        onClick={() => {
-                         toggleRead()
-                        }}>
-                        </FiberNewIcon>
-                        <p><strong>post!</strong></p>
-                        </>
-                    }
+            // <div 
+            // className={newPostNotif.includes(value.id) ? "unReadBtn" : "readBtn" }
+            // onClick={() => {
+            //     navigate(`/post/${value.id}`)
+            //     readPost(value.id);
+            // }}
+            // >
+                <div className="post" key={key}> 
+                    <div className='titleContainer'> 
+                    <div className='title'
+                    onClick={() => {navigate(`/post/${value.id}`)}}>{value.title}</div>
+                        <div className='read'>
+                            <FiberNewIcon 
+                            id='fiberNewIcon'
+                            style={{ fontSize: '2rem', height: '30px' }}>
+                            </FiberNewIcon>
+                            <p><strong>POST!</strong></p>
+                        </div>
                     </div>
-                </div>
-                <div className='postText'
-                onClick={() => {navigate(`/post/${value.id}`)}}> {value.postText} </div>
-                <div className='imageUrl'> { value.imageUrl } </div>
-                <div className="userContainer">
-                    <div className='username'
-                    onClick={() =>{navigate(`/post/${value.id}`)}}> Posted by {value.username}
+                    <div className='postText'
+                    onClick={() => {navigate(`/post/${value.id}`)}}> {value.postText} </div>
+                    <div className='imageUrl'> { value.imageUrl } </div>
+                    <div className="userContainer">
+                        <div className='username'
+                        onClick={() =>{navigate(`/post/${value.id}`)}}> Posted by {value.username}
+                        </div>
+                        <div className="likeContainer">
+                        <ThumbUpIcon
+                        className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn" }
+                        style={{ fontSize: '1.5rem', height: '27px' }}
+                        onClick={() =>
+                        {likePost(value.id)}}>
+                            {" "}
+                            Like
+                        </ThumbUpIcon>
+                        <label> {value.Likes.length} </label>
+                        </div>
                     </div>
-                    <div className="likeContainer">
-                    <ThumbUpIcon
-                     className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn" }
-                     style={{ fontSize: '1.5rem', height: '27px' }}
-                     onClick={() =>
-                     {likePost(value.id)}}>
-                        {" "}
-                        Like
-                    </ThumbUpIcon>
-                    <label> {value.Likes.length} </label>
-                    </div>
-                </div>
-            </div> 
+                </div> 
+            // </div>
             );
         })}
         </div>  

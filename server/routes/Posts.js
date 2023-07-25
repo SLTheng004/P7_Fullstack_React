@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const { Posts, Likes } = require('../models')
+const { Posts, Likes, NewPostNotif } = require('../models')
 const { validateToken } = require('../middleware/Auth');
 const { multer } = require('../middleware/Multer');
 
 //get list of post and list of likes - for home page
 router.get('/', validateToken, async (req, res) => {
-  const listOfPosts = await Posts.findAll({ include: [Likes] });
-  const likedPosts = await Likes.findAll({where: {UserId: req.user.id}})
-  res.json({listOfPosts: listOfPosts, likedPosts: likedPosts});
+  const listOfPosts = await Posts.findAll({ include: Likes, NewPostNotif });
+  // const newPostNotif = await NewPostNotif.findAll({ where: {UserId: req.user.id}});
+  const likedPosts = await Likes.findAll({where: {UserId: req.user.id}});
+  res.json({listOfPosts: listOfPosts, likedPosts: likedPosts}); //newPostNotif: newPostNotif 
 });
 
 //get post by id when clicking specific post

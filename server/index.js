@@ -21,6 +21,9 @@ app.use("/auth", usersRouter);
 const likesRouter = require("./routes/Likes");
 app.use("/likes", likesRouter);
 
+const readRouter = require("./routes/NewPostNotif");
+app.use("/read", readRouter);
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 

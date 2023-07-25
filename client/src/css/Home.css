@@ -107,6 +107,14 @@
    font-family: Arial, Helvetica, sans-serif;
    color: white;
  }
+
+ .unReadBtn {
+
+ }
+
+ .readBtn {
+  display: none;
+ }
  
  .unlikeBtn {
    color: #353839;
