@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        // read: { type: DataTypes.BOOLEAN, defaultValue: false }
+        read: { 
+            type: DataTypes.BOOLEAN, 
+            defaultValue: false }
     });
 
     Posts.associate = (models) => {
