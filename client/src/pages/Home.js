@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 import '../css/Home.css';
 
 
 function Home() {
+    const [showReadIcon, setReadIcon] = useState(true);
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     let navigate = useNavigate();
@@ -25,6 +27,10 @@ function Home() {
             });
         }
     }, []);
+
+    const toggleRead = () => {
+        setReadIcon(!showReadIcon);
+        };
 
     const likePost = (postId) => {
         axios.post('http://localhost:4000/likes',
@@ -60,8 +66,23 @@ function Home() {
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
             <div className="post" > 
-                <div className='title'
-                onClick={() => {navigate(`/post/${value.id}`)}}> {value.title} </div>
+                <div className='titleContainer'> 
+                <div className='title'>{value.title}</div>
+                    <div className='read'>
+                    {showReadIcon &&
+                        <> 
+                        <FiberNewIcon 
+                        id='fiberNewIcon'
+                        style={{ fontSize: '2rem', height: '30px' }}
+                        onClick={() => {
+                         toggleRead()
+                        }}>
+                        </FiberNewIcon>
+                        <p><strong>post!</strong></p>
+                        </>
+                    }
+                    </div>
+                </div>
                 <div className='postText'
                 onClick={() => {navigate(`/post/${value.id}`)}}> {value.postText} </div>
                 <div className='imageUrl'> { value.imageUrl } </div>
@@ -81,7 +102,7 @@ function Home() {
                     <label> {value.Likes.length} </label>
                     </div>
                 </div>
-            </div>
+            </div> 
             );
         })}
         </div>  

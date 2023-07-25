@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        read: { 
-            type: DataTypes.BOOLEAN, 
-            defaultValue: false }
+        // read: { 
+        //     type: DataTypes.BOOLEAN, 
+        //     defaultValue: false }
     });
 
     Posts.associate = (models) => {
@@ -26,8 +26,11 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: "cascade", //deletes all comments when post is deleted
         });
         Posts.hasMany(models.Likes, {
-            onDelete: "cascade", //deletes all comments when post is deleted
+            onDelete: "cascade", //deletes all likes when post is deleted
         });
+        // Posts.hasOne(models.Seen, {
+
+        // })
     }
 
     return Posts;

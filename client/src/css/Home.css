@@ -44,19 +44,28 @@
    cursor: pointer;
  }
  
- .post .title {
-   flex: 20%;
+ .post .titleContainer {
+   padding: 10px;
    border-radius: 5px 5px 0 0;
    border-bottom: 1px solid #007BA7;
    background-color: #007BA7;
-   display: grid;
-   padding: 8px 15px;
+   display: flex;
+   justify-content: space-between;
    align-items: center;
    color: white;
  }
+
+ .read {
+  display: flex;
+  color: #360D07;
+ }
+
+#fiberNewIcon {
+  margin-left: auto;
+  margin-top: 10px;
+ }
    
  .post .postText{
-   flex: 60%;
    display: grid;
    padding: 25px 15px;
  }
