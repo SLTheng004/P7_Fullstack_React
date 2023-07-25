@@ -24,25 +24,24 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await Users.findOne({ where: { username: username } });
 
-    if (!user) { res.json({ error: 'User does not exist' })
+    if (!user) { 
+      res.json({ error: 'User does not exist' });
     } else {
       bcrypt.compare(password, user.password).then((match) => {
         if (!match) {
-          return res.status(401).json({
-            error: new Error('Incorrect user and password combination')
-          })
+          return res.json({ error: 'Incorrect user and password combination' });
         } else {
-          const accessToken = sign(
-            { username: user.username, id: user.id }, 
-            'supersecret', 
-            )
-            res.json({token: accessToken, username: username, id: user.id}) 
-        }
+            const accessToken = sign(
+              { username: user.username, id: user.id }, 
+              'supersecret', 
+              )
+              res.json({token: accessToken, username: username, id: user.id}); 
+          }
       }).catch((error) => {
-        res.status(400).json({error:error});
+          res.status(400).json({error:error});
         });
-    };
-});
+      };
+  });
 
 //checks to see if auth to go into profile
 router.get('/user', validateToken, (req, res) => {
@@ -58,10 +57,10 @@ router.delete('/user/:id', validateToken, async (req, res) => {
           id: userId,
       },
   }).then(() => {
-      res.status(200).json({message: 'Account Deleted'}) 
-  }).catch((error) => {
-    res.status(400).json({error:error});
-  });
+      res.status(200).json({message: 'Account Deleted'})
+    }).catch((error) => {
+        res.status(400).json({error:error});
+      });
 });
 
 

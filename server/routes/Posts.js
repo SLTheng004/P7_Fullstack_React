@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { Posts, Likes } = require('../models')
 const { validateToken } = require('../middleware/Auth');
-const { multerConfig } = require('../middleware/Multer');
+const { multer } = require('../middleware/Multer');
 
 //get list of post and list of likes - for home page
 router.get('/', validateToken, async (req, res) => {
@@ -42,20 +42,23 @@ router.delete("/:postId", validateToken, async (req, res) => {
 
 
 // My idea of how to add multer:
-  // router.post('/', validateToken, multerConfig, async (req, res) => {
+  // router.post('/', validateToken, multer, async (req, res) => {
   //   const url = req.protocol + '://' + req.get('host');
-  //   const imageUrl = url + '/images/' + req.file.filename;
-  //   const post = new post ({
+  //   req.user = JSON.parse(req.user);
+  //   const post = new Posts ({
   //     title: req.user.title,
   //     postText: req.user.postText, 
-  //     imageUrl: imageUrl,
+  //     imageUrl: url + '/images/' + req.file.filename,
+  //     username: req.user.username
   //   });
-  //   const post.username = req.user.username;
-  //   await Posts.create(post).then((post) => {
-  //     res.json(post);   
-  //     }).catch((error) => {
-  //          res.status(400).json({ error: error})
-  //       });
+  //   console.log(post);
+  //   await post.save().then((post) => {
+  //     res.status(201).json(post);
+  //   }).catch((error) => {
+  //     res.status(400).json({
+  //       error: error
+  //     });
+  //   });
   // });
 
 module.exports = router;
