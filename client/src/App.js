@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Route, Routes, NavLink, useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import CreatePost from './pages/CreatePost';
 import Header from './components/Header';
@@ -56,8 +56,8 @@ function App() {
               ) : ( 
                 <>
                 <div className="navbarContainer1">
-                <NavLink to="/">Home Page</NavLink>
-                <NavLink to="/createpost"> Create Your Own Post </NavLink>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/createpost"> Create Post </NavLink>
                 </div>
                 <div className="navbarContainer2">
                 <NavLink to="/profile" id="profile">{authState.username}</NavLink>
@@ -65,7 +65,6 @@ function App() {
                 </div>
                 </>
               )}
-
           </div>
 
           <Routes>
@@ -76,7 +75,6 @@ function App() {
             <Route path="/profile" element={ <Profile logout={logout}/>} />
             <Route path="/Registration" element={ <Registration />} />
             <Route path="/login" element={ <Login />} />
-            //
             <Route path="*" element={ <PageNotFound />} />
           </Routes>
         </Router>

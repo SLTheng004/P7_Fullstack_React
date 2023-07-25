@@ -1,15 +1,13 @@
 import axios from 'axios';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import { AuthContext } from '../helpers/AuthContext';
 import '../css/Home.css';
 
 
 function Home() {
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
-    const { authState } = useContext(AuthContext);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -66,6 +64,7 @@ function Home() {
                 onClick={() => {navigate(`/post/${value.id}`)}}> {value.title} </div>
                 <div className='postText'
                 onClick={() => {navigate(`/post/${value.id}`)}}> {value.postText} </div>
+                <div className='imageUrl'> { value.imageUrl } </div>
                 <div className="userContainer">
                     <div className='username'
                     onClick={() =>{navigate(`/post/${value.id}`)}}> Posted by {value.username}

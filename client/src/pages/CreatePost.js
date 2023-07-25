@@ -1,13 +1,11 @@
-import React, {useContext, useEffect} from "react";
+import React, { useEffect } from "react";
 import '../css/CreatePost.css';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../helpers/AuthContext';
 
 function CreatePost() {
-  const { authState } = useContext(AuthContext);
 
   let navigate = useNavigate();
   const initialValues = {
@@ -20,18 +18,17 @@ function CreatePost() {
       navigate("/login");
     }
   }, []);
+  
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required("You must input a Title!"),
-    postText: Yup.string().required(),
-    imageUrl: Yup.string.optional(),
+    title: Yup.string().required("Title cannot be left blank"),
+    postText: Yup.string().required("Post cannot be left blank"),
   });
 
   const onSubmit = (data) => {
-
     axios.post("http://localhost:4000/posts", 
     data, 
     {headers: { accessToken: localStorage.getItem('accessToken') },
-    }).then((response) => {
+    }).then(() => {
         navigate('/');
       });
   };
@@ -45,20 +42,28 @@ function CreatePost() {
       >
         <Form className="formContainer">
           <label>Title: </label>
-          <ErrorMessage name="title" component="span" />
+          <ErrorMessage name="title" component="span" className="postErrorMessage"/>
           <Field
             autoComplete="off"
             id="inputCreatePost"
             name="title"
-            placeholder="(Ex. Title...)"
+            placeholder="Title..."
           />
+
+
           <label>Post: </label>
-          <ErrorMessage name="postText" component="span" />
+          <ErrorMessage name="postText" component="span" className="postErrorMessage"/>
           <Field
             autoComplete="off"
             id="inputCreatePost"
             name="postText"
-            placeholder="(Ex. Post...)"
+            placeholder="Post..."
+          />
+
+          <Field
+          id="inputCreatePost"
+          name="imageUrl"
+          type="file"
           />
 
           <button type="submit" className="createPostButton"> Create Post</button>

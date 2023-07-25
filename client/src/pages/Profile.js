@@ -1,7 +1,8 @@
-import React, { useEffect, useContext,useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../helpers/AuthContext';
 import axios from 'axios';
+import '../css/Profile.css';
 
 function Profile({logout}) {
     const { authState } = useContext(AuthContext);

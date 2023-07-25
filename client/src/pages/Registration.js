@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate} from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import '../css/Registration.css';
 import axios from 'axios';
-import { AuthContext } from '../helpers/AuthContext';
-
 
 function Registration() {
-    const { setAuthState } = useContext(AuthContext);
     let navigate = useNavigate();
     const initialValues = {
         username: "",
@@ -16,8 +13,30 @@ function Registration() {
       };
     
       const validationSchema = Yup.object().shape({
-        username: Yup.string().min(3).max(15).required('username cannot be left blank'),
-        password: Yup.string().min(4).max(20)
+        username: Yup
+        .string()
+        // .test('unique', 'username already in use', // <- key, message
+        //         function (username) {
+        //             return new Promise((resolve, reject) => {
+        //                 axios.get(`http://localhost:4000/auth/${username}`)
+        //                     .then((res) => {
+        //                         resolve(true);
+        //                     })
+        //                     .catch((error) => {
+        //                         if (error.response.data.content === "username already taken.") {
+        //                             resolve(false);
+        //                         }
+        //                     })
+        //             })
+        //         }
+        //     )
+        .min(3)
+        .max(15)
+        .required('username cannot be left blank'),
+        password: Yup
+        .string()
+        .min(4)
+        .max(20)
         .matches(/[0-9]/, 'Password requires a number')
         .matches(/[a-z]/, 'Password requires a lowercase letter')
         .matches(/[A-Z]/, 'Password requires an uppercase letter')
@@ -25,26 +44,17 @@ function Registration() {
       });
 
 
-      const createAccount = (data) => {
-        axios.post('http://localhost:4000/auth/signup', data).then((response) => {
-          if (response.data.error) {
-            alert(response.data.error)
-          } else { 
-            localStorage.setItem('accessToken', response.data.token);
-            setAuthState({
-              username: response.data.username, 
-              id: 0, 
-              status: true});
+      const onSubmit = (data) => {
+        axios.post('http://localhost:4000/auth/signup', data).then(() => {
             navigate('/');
-            }
-          })
-      };
+          });
+        };
 
   return (
     <div className="createAccountPage">
         <Formik
         initialValues={initialValues}
-        onSubmit={createAccount}
+        onSubmit={onSubmit}
         validationSchema={validationSchema}>
         <Form className="formContainer">
           <h1>Create Account</h1>
