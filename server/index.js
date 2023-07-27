@@ -23,6 +23,9 @@ app.use("/auth", usersRouter);
 const likesRouter = require("./routes/Likes");
 app.use("/likes", likesRouter);
 
+// const readPostRouter = require('./routes/ReadPosts');
+// app.use('/readposts', readPostRouter);
+
 db.sequelize.sync().then(() => {
     app.listen(4000, () => {
         console.log('Server running on port 4000...');

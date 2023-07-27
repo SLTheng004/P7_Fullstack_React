@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import '../css/CreatePost.css';
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 function CreatePost() {
-
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   let navigate = useNavigate();
   const initialValues = {
     title: "",
@@ -29,7 +30,11 @@ function CreatePost() {
   const onSubmit = ((values) => {
     const formData = new FormData();
     for (let value in values) {
-      formData.append(value, values[value]);
+      if (value !== 'imageUrl') {
+        formData.append(value, values[value]);       
+      } else {
+        formData.append(value, image);
+      }
     }
     axios.post('http://localhost:4000/posts', formData,          
     {  headers: { accessToken: localStorage.getItem('accessToken') }}
@@ -46,6 +51,10 @@ function CreatePost() {
         validationSchema={validationSchema}
         initialValues={initialValues}
       >
+        {/* {() => {
+            const {setFieldValue} = useFormikContext();
+          return ( */}
+        
         <Form className="formContainer" encType="multipart/form-data">
           <label>Title: </label>
           <ErrorMessage name="title" component="span" className="postErrorMessage"/>
@@ -72,10 +81,17 @@ function CreatePost() {
           type="file"
           name="imageUrl"
           accept="image/*"
+          onChange = {(e) => {
+            setImage(e.target.files[0])
+            setImageUrl(e.target.value)
+          }}
+          value = {imageUrl}
           />
 
           <button type="submit" className="createPostButton"> Create Post</button>
         </Form>
+          {/* )
+        }} */}
       </Formik>
     </div>
   );

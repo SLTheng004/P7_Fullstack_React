@@ -73,7 +73,7 @@ function Home() {
                     </div>
                     <div className='postText'
                     onClick={() => {navigate(`/post/${value.id}`)}}> {value.postText} </div>
-                    <div className='imageUrl'> { value.imageUrl } </div>
+                    <div className='imageUrl'> <img src={ value.imageUrl} alt="Post image" /> </div>
                     <div className="userContainer">
                         <div className='username'
                         onClick={() =>{navigate(`/post/${value.id}`)}}> Posted by {value.username}

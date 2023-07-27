@@ -12,8 +12,11 @@ router.post('/signup', async (req, res) => {
     Users.create({
       username: username,
       password: hash,
-    })
+    }).then(() => {
       res.status(201).json({message: 'User added successfully!'});
+      }).catch((error) => {
+        res.status(409).json({error});
+        })
   }).catch((error) => {
       res.status(400).json({error:error});  
     });
@@ -35,7 +38,7 @@ router.post('/login', async (req, res) => {
               { username: user.username, id: user.id }, 
               'supersecret', 
               )
-              res.json({token: accessToken, username: username, id: user.id}); 
+              res.status(200).json({token: accessToken, username: username, id: user.id, postsRead: user.postsRead}); 
           }
       }).catch((error) => {
           res.status(400).json({error:error});

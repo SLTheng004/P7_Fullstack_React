@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      postsRead: {
+        type: DataTypes.STRING,
+        defaultValue: "[]"
+      }
     });
   
     Users.associate = (models) => {
