@@ -15,21 +15,9 @@ function Registration() {
       const validationSchema = Yup.object().shape({
         username: Yup
         .string()
-        // .test('unique', 'username already in use', // <- key, message
-        //         function (username) {
-        //             return new Promise((resolve, reject) => {
-        //                 axios.get(`http://localhost:4000/auth/${username}`)
-        //                     .then((res) => {
-        //                         resolve(true);
-        //                     })
-        //                     .catch((error) => {
-        //                         if (error.response.data.content === "username already taken.") {
-        //                             resolve(false);
-        //                         }
-        //                     })
-        //             })
-        //         }
-        //     )
+      //   .test("Unique", "username already in use", values => {
+      //     return (new Set(values)).size === values.length;
+      // })
         .min(3)
         .max(15)
         .required('username cannot be left blank'),

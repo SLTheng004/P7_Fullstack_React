@@ -19,7 +19,7 @@ router.post('/', validateToken, async (req, res) => {
             where: {PostId: PostId, UserId: UserId},
          })
             res.json({liked: false});
-    }
+    } 
 });
 
 

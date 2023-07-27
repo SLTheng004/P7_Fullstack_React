@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 app.use(express.json());
 app.use(cors());
 
 const db = require('./models');
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //Routers 
 const postRouter = require('./routes/Posts');
@@ -20,12 +22,6 @@ app.use("/auth", usersRouter);
 
 const likesRouter = require("./routes/Likes");
 app.use("/likes", likesRouter);
-
-const readRouter = require("./routes/NewPostNotif");
-app.use("/read", readRouter);
-
-app.use('/images', express.static(path.join(__dirname, 'images')));
-
 
 db.sequelize.sync().then(() => {
     app.listen(4000, () => {

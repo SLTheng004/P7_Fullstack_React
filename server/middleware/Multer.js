@@ -2,8 +2,8 @@ const multer = require('multer');
 
 const MIME_TYPES = {
     'image/jpg': 'jpg',
-    'images/jpeg': 'jpg',
-    'images/png': 'png'
+    'image/jpeg': 'jpg',
+    'image/png': 'png'
 };
 
 // where to store files

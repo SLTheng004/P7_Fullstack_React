@@ -25,13 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         Posts.hasMany(models.Likes, {
             onDelete: "cascade", //deletes all likes when post is deleted
         });
-        Posts.hasOne(models.NewPostNotif);
-        models.NewPostNotif.belongsTo(Posts, {
-            foreignKey: {
-                type: DataTypes.BOOLEAN,
-                defaultValue: false,
-              }
-        });
+
     }
 
     return Posts;

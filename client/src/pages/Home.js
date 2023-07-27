@@ -7,7 +7,6 @@ import '../css/Home.css';
 
 
 function Home() {
-    // const [newPostNotif, setNewPostNotif] = useState([]);
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
     let navigate = useNavigate();
@@ -20,7 +19,6 @@ function Home() {
             axios.get('http://localhost:4000/posts',
             {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
                 setListOfPosts(response.data.listOfPosts.reverse());
-                // setNewPostNotif(response.data.newPostNotif)
                 setLikedPosts(response.data.likedPosts.map((like) => {
                     return like.PostId;
                 }));
@@ -58,43 +56,13 @@ function Home() {
         });
     };
 
-    // const readPost = (postId) => {
-    //     axios.post('http://localhost:4000/read',
-    //      {  PostId: postId }, 
-    //      {  headers: { accessToken: localStorage.getItem('accessToken') }}
-    //     ).then((response) => {
-    //         //update if read automatically
-    //         setListOfPosts(newPostNotif.map((post) => {
-    //             if (post.id === postId) {
-    //                 if (response.data.read) {
-    //                     return {...post, NewPostNotif: [...post.NewPostNotif, 0] };
-    //                 } else {
-    //                     const readArray = post.NewPostNotif;
-    //                     readArray.pop();
-    //                     return {...post, NewPostNotif: readArray };
-    //                 }
-    //             } else {
-    //                 setNewPostNotif([...newPostNotif, postId])
-    //                 return post;
-    //             }
-    //         }));
-    //     });
-    // }  
-
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
-            // <div 
-            // className={newPostNotif.includes(value.id) ? "unReadBtn" : "readBtn" }
-            // onClick={() => {
-            //     navigate(`/post/${value.id}`)
-            //     readPost(value.id);
-            // }}
-            // >
                 <div className="post" key={key}> 
-                    <div className='titleContainer'> 
-                    <div className='title'
-                    onClick={() => {navigate(`/post/${value.id}`)}}>{value.title}</div>
+                    <div className='titleContainer'
+                    onClick={() => {navigate(`/post/${value.id}`)}}> 
+                    <div className='title'>{value.title}</div>
                         <div className='read'>
                             <FiberNewIcon 
                             id='fiberNewIcon'
