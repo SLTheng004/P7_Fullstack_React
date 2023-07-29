@@ -48,10 +48,10 @@ router.delete("/:postId", validateToken, async (req, res) => {
       id: postId,
     }
   }).then(() => {
-    res.status(200).json({message: 'post has been deleted'}) 
-  }).catch((error) => {
-     res.status(400).json({ error: error });
-    });
+        res.status(200).json({message: 'post has been deleted'}) 
+      }).catch((error) => {
+        res.status(400).json({ error: error });
+      });
 });
 
 module.exports = router;

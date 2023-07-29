@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { Users } = require('../models');
+const { Users, Posts } = require('../models');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middleware/Auth')
 
 //registration
 router.post('/signup', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body; 
   bcrypt.hash(password, 10).then((hash) => {
     Users.create({
       username: username,
       password: hash,
     }).then(() => {
-      res.status(201).json({message: 'User added successfully!'});
-      }).catch((error) => {
-        res.status(409).json({error});
-        })
+      res.status(201).json({message: 'User added successfully!'}); 
+      }).catch(() => {
+        res.status(409).json({error: 'Username already taken!'});
+        });
   }).catch((error) => {
       res.status(400).json({error:error});  
     });
@@ -64,6 +64,14 @@ router.delete('/user/:id', validateToken, async (req, res) => {
     }).catch((error) => {
         res.status(400).json({error:error});
       });
+});
+
+//adds posts read to userId 
+router.get('/', validateToken, async (req, res) => {
+  const listOfPosts = Posts.findAll();
+  const listOfReadPosts = Users.findAll({ where: {postsRead: req.post.postId}});
+  res.json({listOfPosts: listOfPosts, listOfReadPosts: listOfReadPosts});
+
 });
 
 

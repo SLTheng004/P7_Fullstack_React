@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -15,9 +15,6 @@ function Registration() {
       const validationSchema = Yup.object().shape({
         username: Yup
         .string()
-      //   .test("Unique", "username already in use", values => {
-      //     return (new Set(values)).size === values.length;
-      // })
         .min(3)
         .max(15)
         .required('username cannot be left blank'),

@@ -50,11 +50,7 @@ function CreatePost() {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         initialValues={initialValues}
-      >
-        {/* {() => {
-            const {setFieldValue} = useFormikContext();
-          return ( */}
-        
+      > 
         <Form className="formContainer" encType="multipart/form-data">
           <label>Title: </label>
           <ErrorMessage name="title" component="span" className="postErrorMessage"/>
@@ -90,8 +86,6 @@ function CreatePost() {
 
           <button type="submit" className="createPostButton"> Create Post</button>
         </Form>
-          {/* )
-        }} */}
       </Formik>
     </div>
   );

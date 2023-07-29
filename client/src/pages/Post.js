@@ -74,7 +74,7 @@ function Post() {
     <div className="postPage"> 
         <div className="postContainer">
         <div className="title"> {postObject.title} </div>
-        <div className="postText">{ postObject.postText }</div>
+        <div className="postText">{ postObject.postText } <img src={ postObject.imageUrl} id="imageUrl"/></div>
           <div className="username">
             {postObject.username}
             {authState.username === postObject.username && (
