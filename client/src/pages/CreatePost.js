@@ -22,8 +22,8 @@ function CreatePost() {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().required("title cannot be left blank"),
-    postText: Yup.string().required('post cannot be left blank'),
+    title: Yup.string().required("Title cannot be left blank!"),
+    postText: Yup.string().required('Post cannot be left blank!'),
   });
 
 
@@ -52,6 +52,7 @@ function CreatePost() {
         initialValues={initialValues}
       > 
         <Form className="formContainer" encType="multipart/form-data">
+          <h1>Share Something <br></br> With The Team!</h1>
           <label>Title: </label>
           <ErrorMessage name="title" component="span" className="postErrorMessage"/>
           <Field
@@ -65,13 +66,17 @@ function CreatePost() {
           <label>Post: </label>
           <ErrorMessage name="postText" component="span" className="postErrorMessage"/>
           <Field
+            as ="textarea"
+            style = {{ flexDirection: "wrap"}}
             autoComplete="off"
             id="inputCreatePost"
             name="postText"
             placeholder="Post..."
-            type = "text"
+            className="postBody"
           />
 
+          <label>File:</label>
+          <ErrorMessage name="imageUrl" component="span" className="postErrorMessage"/>
           <Field
           id="inputCreatePost"
           type="file"

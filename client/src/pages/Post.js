@@ -71,10 +71,10 @@ function Post() {
   };
 
   return (
-    <div className="postPage"> 
+    <div className="postPage">
         <div className="postContainer">
-        <div className="title"> {postObject.title} </div>
-        <div className="postText">{ postObject.postText } <img src={ postObject.imageUrl} id="imageUrl"/></div>
+        <div className="title"> { postObject.title } </div>
+        <div className="postText">{ postObject.postText } <img src={ postObject.imageUrl } alt="Post Image" id="imageUrl"/></div>
           <div className="username">
             {postObject.username}
             {authState.username === postObject.username && (
@@ -118,8 +118,7 @@ function Post() {
             </div>
         </div>
     </div>
-
-  )
+  );
 }
 
 export default Post;

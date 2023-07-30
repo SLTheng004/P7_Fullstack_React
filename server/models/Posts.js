@@ -1,6 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
 
     const Posts = sequelize.define("Posts", {
+        id: {
+            type: sequelize.Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         title: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -20,11 +25,16 @@ module.exports = (sequelize, DataTypes) => {
 
     Posts.associate = (models) => {
         Posts.hasMany(models.Comments, {
-            onDelete: "cascade", //deletes all comments when post is deleted
+            onDelete: "cascade", 
         });
         Posts.hasMany(models.Likes, {
-            onDelete: "cascade", //deletes all likes when post is deleted
+            onDelete: "cascade", 
         });
+        Posts.hasMany(models.Users, {
+            foreignKey: {
+                name: 'PostsRead_Id'
+            }
+        })
 
     }
 

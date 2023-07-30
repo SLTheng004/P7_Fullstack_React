@@ -3,7 +3,7 @@ const router = express.Router();
 const { Users, Posts } = require('../models');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
-const { validateToken } = require('../middleware/Auth')
+const { validateToken } = require('../middleware/Auth');
 
 //registration
 router.post('/signup', async (req, res) => {
@@ -66,13 +66,23 @@ router.delete('/user/:id', validateToken, async (req, res) => {
       });
 });
 
-//adds posts read to userId 
-router.get('/', validateToken, async (req, res) => {
-  const listOfPosts = Posts.findAll();
-  const listOfReadPosts = Users.findAll({ where: {postsRead: req.post.postId}});
-  res.json({listOfPosts: listOfPosts, listOfReadPosts: listOfReadPosts});
-
+//add read posts to id
+router.get('/readposts', validateToken, async (req, res) => {
+  const listOfPosts = await Users.findAll({ include: [Posts] });
+  const listOfReadPosts = await Users.findAll({ 
+    where: { 
+      PostsRead_Id: req.post.id
+    }
+  }).then(() => {
+    res.status(200).json({
+      listOfReadPosts: listOfReadPosts, 
+      listOfPosts: listOfPosts
+    });
+  }).catch((error) => {
+    res.status(400).json(error);
+  })
 });
+
 
 
 module.exports = router;

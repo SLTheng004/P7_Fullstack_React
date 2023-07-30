@@ -55,9 +55,13 @@
    color: white;
  }
 
- .read {
+ .notRead {
   display: flex;
   color: #360D07;
+ }
+
+ .read {
+  display: none;
  }
 
 #fiberNewIcon {
@@ -116,14 +120,6 @@
    background-color: #007ba7;
    font-family: Arial, Helvetica, sans-serif;
    color: white;
- }
-
- .unReadBtn {
-
- }
-
- .readBtn {
-  display: none;
  }
  
  .unlikeBtn {

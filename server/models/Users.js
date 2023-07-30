@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Users = sequelize.define("Users", {
+      id: {
+        type: sequelize.Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -9,15 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      postsRead: {
-        type: DataTypes.STRING,
-        defaultValue: "[]"
-      }
     });
   
     Users.associate = (models) => {
       Users.hasMany(models.Likes, {
-          onDelete: "cascade", //deletes all comments when post is deleted
+          onDelete: "cascade",
       });
   }
     return Users;

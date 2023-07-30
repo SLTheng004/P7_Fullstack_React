@@ -9,6 +9,8 @@ import '../css/Home.css';
 function Home() {
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
+    const [listOfReadPosts, setListOfReadPosts] = useState([]);
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +18,7 @@ function Home() {
         if (!localStorage.getItem("accessToken")) {
             navigate('/login');
         } else {
-            axios.get('http://localhost:4000/posts',
+            axios.get('http://localhost:4000/posts', 
             {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
                 setListOfPosts(response.data.listOfPosts.reverse());
                 setLikedPosts(response.data.likedPosts.map((like) => {
@@ -26,6 +28,7 @@ function Home() {
         }
     }, []);
 
+    // updates like when a user interacts
     const likePost = (postId) => {
         axios.post('http://localhost:4000/likes',
          {  PostId: postId }, 
@@ -36,16 +39,11 @@ function Home() {
                 if (post.id === postId) {
                     if (response.data.liked) {
                         return {...post, Likes: [...post.Likes, 0] };
-                    } else {
-                        const likesArray = post.Likes;
-                        likesArray.pop();
-                        return {...post, Likes: likesArray };
                     }
                 } else {
                     return post;
                 }
             }));
-            //change color when liked/unliked
             if (likedPosts.includes(postId)) {
                 setLikedPosts(likedPosts.filter((id) => {
                     return id != postId; 
@@ -56,48 +54,75 @@ function Home() {
         });
     };
 
+    //add posts that current user reads to user table
+    const readPosts = (postId) => {
+        axios.post('http://localhost:4000/auth/readposts', 
+         { PostsRead_Id: postId},
+         {  headers: { accessToken: localStorage.getItem('accessToken') }}
+        ).then((response) => {
+            setListOfReadPosts(listOfReadPosts.map((post) => {
+                if (post.id === postId) {
+                    if (response.data.read) {
+                        return {...post, Users: [...post.Users, 0] };
+                    }
+                } else {
+                    return post;
+                }
+            }));
+            if (listOfReadPosts.includes(postId)) {
+                setListOfReadPosts(listOfReadPosts.filter((id) => {
+                    return id != postId; 
+                }))
+            } else {
+                setListOfReadPosts([...listOfReadPosts, postId])
+            }
+        });
+    }
+
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
-                <div className="post" key={key}> 
-                    <div className='titleContainer'
-                    onClick={() => {navigate(`/post/${value.id}`)}}> 
-                    <div className='title'>{value.title}</div>
-                        <div className='read'>
-                            <FiberNewIcon 
-                            id='fiberNewIcon'
-                            style={{ fontSize: '2rem', height: '30px' }}>
-                            </FiberNewIcon>
-                            <p><strong>POST!</strong></p>
-                        </div>
+                <div className="post" key={key} > 
+                    <div className='titleContainer' onClick={() => {navigate(`/post/${value.id}`)}}> 
+                            <div className='title'>{value.title}</div>
+                            <div 
+                            className={listOfReadPosts.includes(value.id) ? "read" : "notRead" }
+                            onClick={() => {
+                                readPosts()
+                                navigate(`/post/${value.id}`)
+                            }}
+                            >
+                                <FiberNewIcon 
+                                id='fiberNewIcon'
+                                style={{ fontSize: '2rem', height: '30px' }}>
+                                </FiberNewIcon>
+                                <p><strong>POST!</strong></p>
+                            </div>
                     </div>
-                    <div className='postText'
-                    onClick={() => {navigate(`/post/${value.id}`)}}> 
-                    {value.postText} 
-                    <img src={ value.imageUrl} alt="Post image" id="imageUrl" /> 
+                    <div className='postText' onClick={() => {navigate(`/post/${value.id}`)}}> 
+                        {value.postText} 
+                        <img src={ value.imageUrl } alt="Post Image" id="imageUrl" /> 
                     </div>
                     <div className="userContainer">
-                        <div className='username'
-                        onClick={() =>{navigate(`/post/${value.id}`)}}> Posted by {value.username}
+                        <div className='username' onClick={() => {navigate(`/post/${value.id}`)}}>
+                             Posted by {value.username}
                         </div>
                         <div className="likeContainer">
-                        <ThumbUpIcon
-                        className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn" }
-                        style={{ fontSize: '1.5rem', height: '27px' }}
-                        onClick={() =>
-                        {likePost(value.id)}}>
+                            <ThumbUpIcon
+                            className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn" }
+                            style={{ fontSize: '1.5rem', height: '27px' }}
+                            onClick={() =>
+                            {likePost(value.id)}}>
                             {" "}
                             Like
-                        </ThumbUpIcon>
-                        <label> {value.Likes.length} </label>
+                            </ThumbUpIcon>
+                            <label> {value.Likes.length} </label>
                         </div>
                     </div>
                 </div> 
-            // </div>
             );
-        })}
-        </div>  
-  )
+        })} </div>  
+    )
 }
 
 export default Home
