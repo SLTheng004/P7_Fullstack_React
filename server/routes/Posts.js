@@ -1,14 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { Posts, Likes, Users } = require('../models');
+const { Posts, Likes, PostsRead } = require('../models');
 const { validateToken } = require('../middleware/Auth');
 const multer= require('../middleware/Multer');
 
 //get list of post and list of likes - for home page
 router.get('/', validateToken, multer, async (req, res) => {
-  const listOfPosts = await Posts.findAll({ include: [Likes] })
-  const likedPosts = await Likes.findAll({where: {UserId: req.user.id}})
+  const listOfPosts = await Posts.findAll({ include: [Likes] });
+  const likedPosts = await Likes.findAll({where: {UserId: req.user.id}});
   res.json({listOfPosts: listOfPosts, likedPosts: likedPosts});
+});
+
+//add read posts to postsread table
+router.get('/', validateToken, async (req, res) => {
+  const posts = await Posts.findAll({ include: [PostsRead] });
+  const listOfReadPosts = await PostsRead.findAll({ where: { UserId: req.user.id }});
+  res.status(200).json({posts: posts, listOfReadPosts: listOfReadPosts});
 });
 
 //get post by id when clicking specific post
@@ -52,23 +59,6 @@ router.delete("/:postId", validateToken, async (req, res) => {
       }).catch((error) => {
         res.status(400).json({ error: error });
       });
-});
-
-//add read posts to users table
-router.get('/', validateToken, async (req, res) => {
-  const posts = await Posts.findAll({ include: [Users] });
-  const listOfReadPosts = await Users.findAll({ 
-    where: { 
-      PostsRead_Id: req.post.id
-    }
-  }).then(() => {
-    res.status(200).json({
-      posts: posts, 
-      listOfReadPosts: listOfReadPosts
-    });
-  }).catch((error) => {
-    res.status(400).json(error);
-  })
 });
 
 module.exports = router;

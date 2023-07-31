@@ -59,29 +59,19 @@ function Home() {
     };
 
     const readPost = async (postId) => {
-        await axios.post('http://localhost:4000/auth',
-        {  PostsRead_Id: postId }, 
+        await axios.post('http://localhost:4000/postsread',
+        {  PostId: postId }, 
         {  headers: { accessToken: localStorage.getItem('accessToken') }}
         ).then((response) => {
             setListOfPosts(listOfPosts.map((post) => {
                 if (post.id === postId) {
                     if (response.data.read) {
-                        return {...post, Users: [...post.Users, 0] };
-                    } else {
-                        const readArray = post.Users;
-                        return {...post, Users: readArray };
+                        return {...post, PostsRead: [...post.PostsRead, 0] };
                     }
                 } else {
                     return post;
                 }
             }));
-            if (read.includes(postId)) {
-                setRead(read.filter((id) => {
-                    return id != postId; 
-                }))
-            } else {
-                setRead([...read, postId])
-            }
         }).catch ((error) => {
             console.log(error);
         });
@@ -92,12 +82,13 @@ function Home() {
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
                 <div className="post" key={key} > 
-                    <div className='titleContainer'> 
-                            <div className='title' onClick={() => {navigate(`/post/${value.id}`)}}>{value.title}</div>
-                            <div 
-                            className={read.includes(value.id) ? "read" : "notRead" }
-                            onClick={(e) =>
-                            {readPost(value.id)}}> 
+                    <div className='titleContainer' 
+                    onClick={() => {
+                        navigate(`/post/${value.id}`)
+                        readPost(value.id)
+                    }}> 
+                            <div className='title'>{value.title}</div>
+                            <div className={read.includes(value.id) ? "read" : "notRead" }> 
                                 <FiberNewIcon 
                                 id='fiberNewIcon'
                                 style={{ fontSize: '2rem', height: '30px' }}>
@@ -105,12 +96,20 @@ function Home() {
                                 <p><strong>POST!</strong></p>
                             </div>
                     </div>
-                    <div className='postText' onClick={() => {navigate(`/post/${value.id}`)}}> 
+                    <div className='postText' 
+                    onClick={() => {
+                        navigate(`/post/${value.id}`)
+                        readPost(value.id)
+                    }}> 
                         {value.postText} 
                         <img src={ value.imageUrl } alt="Post Image" id="imageUrl" /> 
                     </div>
                     <div className="userContainer">
-                        <div className='username' onClick={() => {navigate(`/post/${value.id}`)}}>
+                        <div className='username' 
+                        onClick={() => {
+                        navigate(`/post/${value.id}`)
+                        readPost(value.id)
+                    }}>
                              Posted by {value.username}
                         </div>
                         <div className="likeContainer">

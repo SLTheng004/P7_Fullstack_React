@@ -66,24 +66,6 @@ router.delete('/user/:id', validateToken, async (req, res) => {
       });
 });
 
-router.post('/', validateToken, async (req, res) => {
-  const { PostsRead_Id } = req.body;
-  const  id  = req.user.id;
-
-  const found = await Users.findOne({
-       where: {PostsRead_Id: PostsRead_Id, id: id},
-       });
-  if (!found) {
-      await Users.create({PostsRead_Id: PostsRead_Id, id: id})
-          res.json({read: true});
-  } else {
-      await Users.destroy({ 
-          where: {PostsRead_Id: PostsRead_Id, id: id},
-       })
-          res.json({read: false});
-  } 
-});
-
 
 
 module.exports = router;
