@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
                 name: 'PostsRead_Id'
             }
         })
-
     }
 
     return Posts;

@@ -9,7 +9,7 @@ import '../css/Home.css';
 function Home() {
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
-    const [listOfReadPosts, setListOfReadPosts] = useState([]);
+    const [read, setRead] = useState([]);
 
     let navigate = useNavigate();
 
@@ -39,6 +39,10 @@ function Home() {
                 if (post.id === postId) {
                     if (response.data.liked) {
                         return {...post, Likes: [...post.Likes, 0] };
+                    } else {
+                        const likesArray = post.Likes;
+                        likesArray.pop();
+                        return {...post, Likes: likesArray };
                     }
                 } else {
                     return post;
@@ -54,30 +58,32 @@ function Home() {
         });
     };
 
-    //add posts that current user reads to user table
-    const readPosts = (postId) => {
-        axios.post('http://localhost:4000/auth/readposts', 
-         { PostsRead_Id: postId},
+    const readPost = (postId) => {
+        axios.post('http://localhost:4000/auth/readposts',
+         {  PostsRead_Id: postId }, 
          {  headers: { accessToken: localStorage.getItem('accessToken') }}
         ).then((response) => {
-            setListOfReadPosts(listOfReadPosts.map((post) => {
+            setListOfPosts(listOfPosts.map((post) => {
                 if (post.id === postId) {
                     if (response.data.read) {
                         return {...post, Users: [...post.Users, 0] };
+                    } else {
+                        return post;
                     }
                 } else {
                     return post;
                 }
             }));
-            if (listOfReadPosts.includes(postId)) {
-                setListOfReadPosts(listOfReadPosts.filter((id) => {
+            if (read.includes(postId)) {
+                setRead(read.filter((id) => {
                     return id != postId; 
                 }))
             } else {
-                setListOfReadPosts([...listOfReadPosts, postId])
+                setRead([...read, postId])
             }
         });
-    }
+    };
+
 
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
@@ -86,12 +92,9 @@ function Home() {
                     <div className='titleContainer' onClick={() => {navigate(`/post/${value.id}`)}}> 
                             <div className='title'>{value.title}</div>
                             <div 
-                            className={listOfReadPosts.includes(value.id) ? "read" : "notRead" }
-                            onClick={() => {
-                                readPosts()
-                                navigate(`/post/${value.id}`)
-                            }}
-                            >
+                            className={read.includes(value.id) ? "read" : "notRead" }
+                            onClick={() =>
+                            {readPost(value.id)}}> 
                                 <FiberNewIcon 
                                 id='fiberNewIcon'
                                 style={{ fontSize: '2rem', height: '30px' }}>

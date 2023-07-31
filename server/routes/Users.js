@@ -71,7 +71,7 @@ router.get('/readposts', validateToken, async (req, res) => {
   const listOfPosts = await Users.findAll({ include: [Posts] });
   const listOfReadPosts = await Users.findAll({ 
     where: { 
-      PostsRead_Id: req.post.id
+      PostsRead_Id: req.params.Posts.id
     }
   }).then(() => {
     res.status(200).json({
