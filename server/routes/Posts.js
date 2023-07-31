@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Posts, Likes } = require('../models');
+const { Posts, Likes, Users } = require('../models');
 const { validateToken } = require('../middleware/Auth');
 const multer= require('../middleware/Multer');
 
@@ -52,6 +52,23 @@ router.delete("/:postId", validateToken, async (req, res) => {
       }).catch((error) => {
         res.status(400).json({ error: error });
       });
+});
+
+//add read posts to users table
+router.get('/', validateToken, async (req, res) => {
+  const posts = await Posts.findAll({ include: [Users] });
+  const listOfReadPosts = await Users.findAll({ 
+    where: { 
+      PostsRead_Id: req.post.id
+    }
+  }).then(() => {
+    res.status(200).json({
+      posts: posts, 
+      listOfReadPosts: listOfReadPosts
+    });
+  }).catch((error) => {
+    res.status(400).json(error);
+  })
 });
 
 module.exports = router;

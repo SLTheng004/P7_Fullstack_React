@@ -58,17 +58,18 @@ function Home() {
         });
     };
 
-    const readPost = (postId) => {
-        axios.post('http://localhost:4000/auth/readposts',
-         {  PostsRead_Id: postId }, 
-         {  headers: { accessToken: localStorage.getItem('accessToken') }}
+    const readPost = async (postId) => {
+        await axios.post('http://localhost:4000/auth',
+        {  PostsRead_Id: postId }, 
+        {  headers: { accessToken: localStorage.getItem('accessToken') }}
         ).then((response) => {
             setListOfPosts(listOfPosts.map((post) => {
                 if (post.id === postId) {
                     if (response.data.read) {
                         return {...post, Users: [...post.Users, 0] };
                     } else {
-                        return post;
+                        const readArray = post.Users;
+                        return {...post, Users: readArray };
                     }
                 } else {
                     return post;
@@ -81,6 +82,8 @@ function Home() {
             } else {
                 setRead([...read, postId])
             }
+        }).catch ((error) => {
+            console.log(error);
         });
     };
 
@@ -89,11 +92,11 @@ function Home() {
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
                 <div className="post" key={key} > 
-                    <div className='titleContainer' onClick={() => {navigate(`/post/${value.id}`)}}> 
-                            <div className='title'>{value.title}</div>
+                    <div className='titleContainer'> 
+                            <div className='title' onClick={() => {navigate(`/post/${value.id}`)}}>{value.title}</div>
                             <div 
                             className={read.includes(value.id) ? "read" : "notRead" }
-                            onClick={() =>
+                            onClick={(e) =>
                             {readPost(value.id)}}> 
                                 <FiberNewIcon 
                                 id='fiberNewIcon'

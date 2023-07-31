@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
     const Users = sequelize.define("Users", {
-      id: {
-        type: sequelize.Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -14,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      PostsRead_Id: {
+        type: DataTypes.STRING,
+        defaultValue: "[]"
+      }
     });
   
     Users.associate = (models) => {

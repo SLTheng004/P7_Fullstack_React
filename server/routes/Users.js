@@ -66,21 +66,22 @@ router.delete('/user/:id', validateToken, async (req, res) => {
       });
 });
 
-//add read posts to id
-router.get('/readposts', validateToken, async (req, res) => {
-  const listOfPosts = await Users.findAll({ include: [Posts] });
-  const listOfReadPosts = await Users.findAll({ 
-    where: { 
-      PostsRead_Id: req.params.Posts.id
-    }
-  }).then(() => {
-    res.status(200).json({
-      listOfReadPosts: listOfReadPosts, 
-      listOfPosts: listOfPosts
-    });
-  }).catch((error) => {
-    res.status(400).json(error);
-  })
+router.post('/', validateToken, async (req, res) => {
+  const { PostsRead_Id } = req.body;
+  const  id  = req.user.id;
+
+  const found = await Users.findOne({
+       where: {PostsRead_Id: PostsRead_Id, id: id},
+       });
+  if (!found) {
+      await Users.create({PostsRead_Id: PostsRead_Id, id: id})
+          res.json({read: true});
+  } else {
+      await Users.destroy({ 
+          where: {PostsRead_Id: PostsRead_Id, id: id},
+       })
+          res.json({read: false});
+  } 
 });
 
 
