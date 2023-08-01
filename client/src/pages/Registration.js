@@ -7,11 +7,14 @@ import axios from 'axios';
 
 function Registration() {
   let navigate = useNavigate();
+
+  //set formik values
   const initialValues = {
     username: "",
     password: "",
   };
 
+  //formik schema to have signup requirements 
   const validationSchema = Yup.object().shape({
     username: Yup
       .string()
@@ -28,7 +31,7 @@ function Registration() {
       .required('password cannot be left blank'),
   });
 
-
+  //if no errors, submit data and send to login
   const onSubmit = (data) => {
     axios.post('http://localhost:4000/auth/signup', data).then(() => {
       navigate('/');

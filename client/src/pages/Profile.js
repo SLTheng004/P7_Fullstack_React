@@ -8,13 +8,14 @@ function Profile({ logout }) {
   const { authState } = useContext(AuthContext);
   let navigate = useNavigate();
 
+  //check if auth, else send to login
   useEffect(() => {
-    //check if auth
     if (!localStorage.getItem("accessToken")) {
       navigate('/login');
     }
   }, []);
 
+  //delete user
   const onDelete = () => {
     axios.delete('http://localhost:4000/auth/user/' + authState.id,
       { headers: { accessToken: localStorage.getItem('accessToken') } }).then(() => {

@@ -14,10 +14,10 @@ function Post() {
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
 
+  //get post by id and comments by id
   useEffect(() => {
     axios.get(`http://localhost:4000/posts/byId/${id}`).then((response) => {
       setPostObject(response.data);
-
     });
 
     axios.get(`http://localhost:4000/comments/${id}`).then((response) => {
@@ -25,15 +25,12 @@ function Post() {
     });
   }, []);
 
+  //add comment and specify to which user, and set comment id
   const addComment = () => {
-    axios.post("http://localhost:4000/comments", {
-      commentBody: newComment,
-      PostId: id,
-    },
+    axios.post("http://localhost:4000/comments",
+      { commentBody: newComment, PostId: id },
       {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
+        headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then((response) => {
         if (response.data.error) {
@@ -46,6 +43,7 @@ function Post() {
       });
   };
 
+  //delete comment by comment id
   const deleteComment = (id) => {
     axios
       .delete(`http://localhost:4000/comments/${id}`, {
@@ -59,7 +57,7 @@ function Post() {
       });
   };
 
-
+  //delete post by id
   const deletePost = (id) => {
     axios
       .delete(`http://localhost:4000/posts/${id}`, {
@@ -81,11 +79,7 @@ function Post() {
         <div className="username">
           {postObject.username}
           {authState.username === postObject.username && (
-            <button
-              onClick={() => {
-                deletePost(postObject.id);
-              }}
-            >
+            <button onClick={() => { deletePost(postObject.id) }}>
               {" "}
               Delete Post
             </button>

@@ -20,7 +20,7 @@ function App() {
     status: false,
   });
 
-
+// if not authenticated, send error message
   useEffect(() => {
     axios.get('http://localhost:4000/auth/user', {
       headers: {

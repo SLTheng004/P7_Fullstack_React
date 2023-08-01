@@ -12,6 +12,7 @@ function Login() {
 
   let navigate = useNavigate();
 
+  //login if criteria are met, otherwise alert error
   const login = () => {
     const data = {
       username: username,

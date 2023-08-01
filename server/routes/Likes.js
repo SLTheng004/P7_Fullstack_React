@@ -3,7 +3,7 @@ const router = express.Router()
 const { Likes } = require('../models')
 const { validateToken } = require('../middleware/Auth')
 
-//request to like and unlike
+//request to like and unlike by creating or destroying like
 router.post('/', validateToken, async (req, res) => {
     const { PostId } = req.body;
     const UserId = req.user.id;

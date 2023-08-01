@@ -15,18 +15,20 @@ function CreatePost() {
     imageUrl: ""
   };
 
+  //send to login if not auth
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
   }, []);
 
+  //formik schema for requirements
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title cannot be left blank!"),
     postText: Yup.string().required('Post cannot be left blank!'),
   });
 
-
+  //append and post new post
   const onSubmit = ((values) => {
     const formData = new FormData();
     for (let value in values) {
@@ -86,7 +88,7 @@ function CreatePost() {
               setImage(e.target.files[0])
               setImageUrl(e.target.value) //file input updates on form
             }}
-            value={imageUrl}
+            value={imageUrl} //file input updates on form
           />
 
           <button type="submit" className="createPostButton"> Create Post</button>

@@ -13,8 +13,8 @@ function Home() {
 
     let navigate = useNavigate();
 
+    //if not logged in go to home page, else display home page
     useEffect(() => {
-        //check if auth
         if (!localStorage.getItem("accessToken")) {
             navigate('/login');
         } else {
@@ -39,7 +39,7 @@ function Home() {
             { PostId: postId },
             { headers: { accessToken: localStorage.getItem('accessToken') } }
         ).then((response) => {
-            //update likes automatically
+            //toggle like or unlike
             setListOfPosts(listOfPosts.map((post) => {
                 if (post.id === postId) {
                     if (response.data.liked) {
@@ -63,6 +63,7 @@ function Home() {
         });
     };
 
+    // updates to api if read 
     const readPost = async (postId) => {
         await axios.post('http://localhost:4000/postsread',
             { PostId: postId },
@@ -84,19 +85,19 @@ function Home() {
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
                 <div className="post" key={key} >
-                    <div className='titleContainer' >
-                        <div className='title'
-                            onClick={() => {
-                                readPost(value.id)
-                                navigate(`/post/${value.id}`)
-                            }}>{value.title}</div>
+                    <div className='titleContainer'
+                        onClick={() => {
+                            readPost(value.id)
+                            navigate(`/post/${value.id}`)
+                        }} >
+                        <div className='title'>
+                            {value.title}</div>
                         <div
                             className={
                                 read.includes(value.id) && "read"}
                             onClick={() => {
                                 readPost(value.id)
-                            }}
-                        >
+                            }}>
                             <FiberNewIcon
                                 id='fiberNewIcon'
                                 style={{ fontSize: '2rem', height: '30px' }}>

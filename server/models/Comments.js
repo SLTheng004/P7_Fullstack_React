@@ -1,5 +1,3 @@
-// create comment values
-
 module.exports = (sequelize, DataTypes) => {
   const Comments = sequelize.define("Comments", {
     commentBody: {

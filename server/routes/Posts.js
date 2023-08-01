@@ -12,7 +12,7 @@ router.get('/', validateToken, multer, async (req, res) => {
   res.json({ listOfPosts: listOfPosts, likedPosts: likedPosts });
 });
 
-//add read posts to postsread table
+//get list of read posts from list of posts
 router.get('/', validateToken, async (req, res) => {
   const posts = await Posts.findAll({ include: [PostsRead] });
   const listOfReadPosts = await PostsRead.findAll({ where: { UserId: req.user.id } });
@@ -31,7 +31,7 @@ router.get('/byId/:id', multer, async (req, res) => {
   }
 });
 
-//createpost controller
+//create post controller
 router.post('/', validateToken, multer, async (req, res) => {
   const body = req.body;
   const url = req.protocol + '://' + req.get('host');
@@ -48,25 +48,24 @@ router.post('/', validateToken, multer, async (req, res) => {
       console.log(error))
 });
 
-//request to delete post controller
+//delete post controller
 router.delete("/:postId", validateToken, async (req, res) => {
   const postId = req.params.postId;
-  Posts.findOne({id: req.params.id})
-  .then((post) => {
-    const filename = post.imageUrl.split("/images")[1];
-    fs.unlink(`images/${filename}`, () => {
-      Posts.destroy({
-        where: {
-          id: postId,
-        }
+  Posts.findOne({ id: req.params.id })
+    .then((post) => {
+      const filename = post.imageUrl.split("/images")[1];
+      fs.unlink(`images/${filename}`, () => {
+        Posts.destroy({
+          where: {
+            id: postId,
+          }
+        })
       })
-    })
-  }).then(() => {
-    res.status(200).json({ message: 'post has been deleted' })
-  }).catch((error) => {
-    res.status(400).json({ error: error });
-  });
-
+    }).then(() => {
+      res.status(200).json({ message: 'post has been deleted' })
+    }).catch((error) => {
+      res.status(400).json({ error: error });
+    });
 });
 
 module.exports = router;
