@@ -25,6 +25,11 @@ function Home() {
                     return like.PostId;
                 }));
             });
+            axios.get('http://localhost:4000/postsread', {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
+                setRead(response.data.map((read) => {
+                    return read.PostId;
+                }))
+            })
         }
     }, []);
 
@@ -62,19 +67,16 @@ function Home() {
         await axios.post('http://localhost:4000/postsread',
         {  PostId: postId }, 
         {  headers: { accessToken: localStorage.getItem('accessToken') }}
-        ).then((response) => {
-            setListOfPosts(listOfPosts.map((post) => {
-                if (post.id === postId) {
-                    if (response.data.read) {
-                        return {...post, PostsRead: [...post.PostsRead, 0] };
-                    }
-                } else {
-                    return post;
-                }
-            }));
-        }).catch ((error) => {
-            console.log(error);
-        });
+        ).then(() => {
+            if (read.includes(postId)) {
+                setRead(read.filter((id) => {
+                    return id != postId; 
+                }))
+            } else {
+                setRead([...read, postId])
+            }
+
+        })
     };
 
 
@@ -82,33 +84,38 @@ function Home() {
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
                 <div className="post" key={key} > 
-                    <div className='titleContainer' 
-                    onClick={() => {
-                        navigate(`/post/${value.id}`)
-                        readPost(value.id)
-                    }}> 
-                            <div className='title'>{value.title}</div>
-                            <div className={read.includes(value.id) ? "read" : "notRead" }> 
+                    <div className='titleContainer' > 
+                            <div className='title'
+                            onClick={() => {
+                                readPost(value.id)
+                                navigate(`/post/${value.id}`)
+                            }}>{value.title}</div>
+                            <div 
+                            className={
+                                read.includes(value.id) && "read"}
+                            onClick={() => {
+                                readPost(value.id)
+                            }}
+                            > 
                                 <FiberNewIcon 
                                 id='fiberNewIcon'
                                 style={{ fontSize: '2rem', height: '30px' }}>
                                 </FiberNewIcon>
-                                <p><strong>POST!</strong></p>
                             </div>
                     </div>
                     <div className='postText' 
                     onClick={() => {
-                        navigate(`/post/${value.id}`)
                         readPost(value.id)
+                        navigate(`/post/${value.id}`)
                     }}> 
                         {value.postText} 
-                        <img src={ value.imageUrl } alt="Post Image" id="imageUrl" /> 
+                        {value.imageUrl && <img src={ value.imageUrl } alt="Post Image" id="imageUrl" />} 
                     </div>
                     <div className="userContainer">
                         <div className='username' 
                         onClick={() => {
-                        navigate(`/post/${value.id}`)
                         readPost(value.id)
+                        navigate(`/post/${value.id}`)
                     }}>
                              Posted by {value.username}
                         </div>
@@ -129,5 +136,4 @@ function Home() {
         })} </div>  
     )
 }
-
 export default Home

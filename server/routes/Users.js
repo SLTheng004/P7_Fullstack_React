@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
               { username: user.username, id: user.id }, 
               'supersecret', 
               )
-              res.status(200).json({token: accessToken, username: username, id: user.id, postsRead: user.postsRead}); 
+              res.status(200).json({token: accessToken, username: username, id: user.id}); 
           }
       }).catch((error) => {
           res.status(400).json({error:error});

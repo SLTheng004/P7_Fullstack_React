@@ -26,7 +26,7 @@ router.post('/', validateToken, async (req,res) => {
     })
 });
 
-//delete comments
+//  delete comments
 router.delete('/:commentId', validateToken, async (req, res) => {
     const commentId = req.params.commentId;
     await Comments.destroy({

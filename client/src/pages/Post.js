@@ -27,9 +27,9 @@ function Post() {
 
   const addComment = () => {
     axios.post("http://localhost:4000/comments", {
-        commentBody: newComment,
-        PostId: id,
-      },
+      commentBody: newComment,
+      PostId: id,
+    },
       {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
@@ -39,7 +39,7 @@ function Post() {
         if (response.data.error) {
           alert(response.data.error)
         } else {
-          const commentToAdd = { commentBody: newComment, username: response.data.username };
+          const commentToAdd = { id: response.data.id, commentBody: newComment, username: response.data.username };
           setComments([...comments, commentToAdd]);
           setNewComment(""); // clear input after submit
         }
@@ -72,51 +72,54 @@ function Post() {
 
   return (
     <div className="postPage">
-        <div className="postContainer">
-        <div className="title"> { postObject.title } </div>
-        <div className="postText">{ postObject.postText } <img src={ postObject.imageUrl } alt="Post Image" id="imageUrl"/></div>
-          <div className="username">
-            {postObject.username}
-            {authState.username === postObject.username && (
-              <button
-                onClick={() => {
-                  deletePost(postObject.id);
-                }}
-              >
-                {" "}
-                Delete Post
-              </button>
-            )}
+      <div className="postContainer">
+        <div className="title"> {postObject.title} </div>
+        <div className="postText">
+          {postObject.postText}
+          {postObject.imageUrl && <img src={postObject.imageUrl} alt="Post Image" id="imageUrl" />}
+        </div>
+        <div className="username">
+          {postObject.username}
+          {authState.username === postObject.username && (
+            <button
+              onClick={() => {
+                deletePost(postObject.id);
+              }}
+            >
+              {" "}
+              Delete Post
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="commentContainer">
+        <div className="addComment">
+          <input
+            autoComplete="off"
+            id="commentInput"
+            type="text"
+            placeholder="What are your thoughts?"
+            value={newComment}
+            onChange={(event) => {
+              setNewComment(event.target.value);
+            }}
+          />
+          <button className="addCommentButton" onClick={addComment}> Comment </button>
+        </div>
+        <div className="listOfComments">
+          {comments.map((comment, key) => {
+            return <div key={key} className="comment">
+              <label id="userComment"> {comment.username} commented: </label>
+              <div className="commentBody">
+                {comment.commentBody}
+                {authState.username === comment.username && (
+                  <button onClick={() => { deleteComment(comment.id) }}>Delete Comment</button>
+                )}
               </div>
-        </div>
-        <div className="commentContainer">
-            <div className="addComment">
-              <input
-              autoComplete="off"
-              id="commentInput"
-              type="text"  
-              placeholder="What are your thoughts?"
-              value={newComment}
-              onChange={(event) => {
-                setNewComment(event.target.value);
-              }} 
-              />
-              <button className="addCommentButton" onClick={addComment}> Comment </button>
             </div>
-            <div className="listOfComments">
-                {comments.map((comment, key) => {
-                  return <div key={key} className="comment"> 
-                    <label id="userComment"> {comment.username} commented: </label>
-                    <div className="commentBody">
-                      { comment.commentBody }
-                      {authState.username === comment.username && (
-                      <button onClick={() => {deleteComment(comment.id)}}>Delete Comment</button>
-                      )}
-                    </div>               
-                </div>
-                })}
-            </div>
+          })}
         </div>
+      </div>
     </div>
   );
 }

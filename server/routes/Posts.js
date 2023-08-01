@@ -37,7 +37,7 @@ router.post('/', validateToken, multer, async (req, res) => {
   const post = new Posts ({
     title: body.title,
     postText: body.postText, 
-    imageUrl: url + '/images/' + req.file.filename,
+    imageUrl: req.file ? url + '/images/' + req.file.filename : "",
   });
   post.username = req.user.username;
   post.save()

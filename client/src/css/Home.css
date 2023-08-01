@@ -56,12 +56,12 @@
  }
 
  .notRead {
-  display: flex;
-  color: #360D07;
+
  }
 
  .read {
   display: none;
+
  }
 
 #fiberNewIcon {

@@ -52,7 +52,7 @@ function CreatePost() {
         initialValues={initialValues}
       > 
         <Form className="formContainer" encType="multipart/form-data">
-          <h1>Share Something <br></br> With The Team!</h1>
+          <h1>Create A Post</h1>
           <label>Title: </label>
           <ErrorMessage name="title" component="span" className="postErrorMessage"/>
           <Field
@@ -84,7 +84,7 @@ function CreatePost() {
           accept="image/*"
           onChange = {(e) => {
             setImage(e.target.files[0])
-            setImageUrl(e.target.value)
+            setImageUrl(e.target.value) //file input updates on form
           }}
           value = {imageUrl}
           />
