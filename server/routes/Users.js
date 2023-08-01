@@ -53,12 +53,11 @@ router.get('/user', validateToken, (req, res) => {
 
 //deletes user
 router.delete('/user/:id', validateToken, async (req, res) => {
-  const userId = req.params.id;
-
+  const id = req.params.id;
   await Users.destroy({
     where: {
-      id: userId,
-    },
+      id
+    }
   }).then(() => {
     res.status(200).json({ message: 'Account Deleted' })
   }).catch((error) => {

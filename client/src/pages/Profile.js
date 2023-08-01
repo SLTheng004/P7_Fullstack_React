@@ -5,6 +5,7 @@ import axios from 'axios';
 import '../css/Profile.css';
 
 function Profile({ logout }) {
+
   const { authState } = useContext(AuthContext);
   let navigate = useNavigate();
 
