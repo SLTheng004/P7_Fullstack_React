@@ -8,10 +8,10 @@ router.post('/', validateToken, async (req, res) => {
   const UserId = req.user.id;
 
   await PostsRead.create({
-    PostId, 
+    PostId,
     UserId
   }).then(() => {
-    res.status(201).json({ read: true });    
+    res.status(201).json({ read: true });
   }).catch((error) => {
     res.status(400).json(error);
   })

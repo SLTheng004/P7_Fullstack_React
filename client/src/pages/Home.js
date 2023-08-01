@@ -18,14 +18,14 @@ function Home() {
         if (!localStorage.getItem("accessToken")) {
             navigate('/login');
         } else {
-            axios.get('http://localhost:4000/posts', 
-            {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
-                setListOfPosts(response.data.listOfPosts.reverse());
-                setLikedPosts(response.data.likedPosts.map((like) => {
-                    return like.PostId;
-                }));
-            });
-            axios.get('http://localhost:4000/postsread', {  headers: { accessToken: localStorage.getItem('accessToken') }}).then((response) => {
+            axios.get('http://localhost:4000/posts',
+                { headers: { accessToken: localStorage.getItem('accessToken') } }).then((response) => {
+                    setListOfPosts(response.data.listOfPosts.reverse());
+                    setLikedPosts(response.data.likedPosts.map((like) => {
+                        return like.PostId;
+                    }));
+                });
+            axios.get('http://localhost:4000/postsread', { headers: { accessToken: localStorage.getItem('accessToken') } }).then((response) => {
                 setRead(response.data.map((read) => {
                     return read.PostId;
                 }))
@@ -36,18 +36,18 @@ function Home() {
     // updates like when a user interacts
     const likePost = (postId) => {
         axios.post('http://localhost:4000/likes',
-         {  PostId: postId }, 
-         {  headers: { accessToken: localStorage.getItem('accessToken') }}
+            { PostId: postId },
+            { headers: { accessToken: localStorage.getItem('accessToken') } }
         ).then((response) => {
             //update likes automatically
             setListOfPosts(listOfPosts.map((post) => {
                 if (post.id === postId) {
                     if (response.data.liked) {
-                        return {...post, Likes: [...post.Likes, 0] };
+                        return { ...post, Likes: [...post.Likes, 0] };
                     } else {
                         const likesArray = post.Likes;
                         likesArray.pop();
-                        return {...post, Likes: likesArray };
+                        return { ...post, Likes: likesArray };
                     }
                 } else {
                     return post;
@@ -55,7 +55,7 @@ function Home() {
             }));
             if (likedPosts.includes(postId)) {
                 setLikedPosts(likedPosts.filter((id) => {
-                    return id != postId; 
+                    return id != postId;
                 }))
             } else {
                 setLikedPosts([...likedPosts, postId])
@@ -65,12 +65,12 @@ function Home() {
 
     const readPost = async (postId) => {
         await axios.post('http://localhost:4000/postsread',
-        {  PostId: postId }, 
-        {  headers: { accessToken: localStorage.getItem('accessToken') }}
+            { PostId: postId },
+            { headers: { accessToken: localStorage.getItem('accessToken') } }
         ).then(() => {
             if (read.includes(postId)) {
                 setRead(read.filter((id) => {
-                    return id != postId; 
+                    return id != postId;
                 }))
             } else {
                 setRead([...read, postId])
@@ -83,57 +83,56 @@ function Home() {
     return (
         <div className="App"> {listOfPosts.map((value, key) => {
             return (
-                <div className="post" key={key} > 
-                    <div className='titleContainer' > 
-                            <div className='title'
+                <div className="post" key={key} >
+                    <div className='titleContainer' >
+                        <div className='title'
                             onClick={() => {
                                 readPost(value.id)
                                 navigate(`/post/${value.id}`)
                             }}>{value.title}</div>
-                            <div 
+                        <div
                             className={
                                 read.includes(value.id) && "read"}
                             onClick={() => {
                                 readPost(value.id)
                             }}
-                            > 
-                                <FiberNewIcon 
+                        >
+                            <FiberNewIcon
                                 id='fiberNewIcon'
                                 style={{ fontSize: '2rem', height: '30px' }}>
-                                </FiberNewIcon>
-                            </div>
+                            </FiberNewIcon>
+                        </div>
                     </div>
-                    <div className='postText' 
-                    onClick={() => {
-                        readPost(value.id)
-                        navigate(`/post/${value.id}`)
-                    }}> 
-                        {value.postText} 
-                        {value.imageUrl && <img src={ value.imageUrl } alt="Post Image" id="imageUrl" />} 
+                    <div className='postText'
+                        onClick={() => {
+                            readPost(value.id)
+                            navigate(`/post/${value.id}`)
+                        }}>
+                        {value.postText}
+                        {value.imageUrl && <img src={value.imageUrl} alt="Post Image" id="imageUrl" />}
                     </div>
                     <div className="userContainer">
-                        <div className='username' 
-                        onClick={() => {
-                        readPost(value.id)
-                        navigate(`/post/${value.id}`)
-                    }}>
-                             Posted by {value.username}
+                        <div className='username'
+                            onClick={() => {
+                                readPost(value.id)
+                                navigate(`/post/${value.id}`)
+                            }}>
+                            Posted by {value.username}
                         </div>
                         <div className="likeContainer">
                             <ThumbUpIcon
-                            className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn" }
-                            style={{ fontSize: '1.5rem', height: '27px' }}
-                            onClick={() =>
-                            {likePost(value.id)}}>
-                            {" "}
-                            Like
+                                className={likedPosts.includes(value.id) ? "unlikeBtn" : "likeBtn"}
+                                style={{ fontSize: '1.5rem', height: '27px' }}
+                                onClick={() => { likePost(value.id) }}>
+                                {" "}
+                                Like
                             </ThumbUpIcon>
                             <label> {value.Likes.length} </label>
                         </div>
                     </div>
-                </div> 
+                </div>
             );
-        })} </div>  
+        })} </div>
     )
 }
 export default Home

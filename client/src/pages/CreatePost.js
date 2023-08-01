@@ -31,13 +31,13 @@ function CreatePost() {
     const formData = new FormData();
     for (let value in values) {
       if (value !== 'imageUrl') {
-        formData.append(value, values[value]);       
+        formData.append(value, values[value]);
       } else {
         formData.append(value, image);
       }
     }
-    axios.post('http://localhost:4000/posts', formData,          
-    {  headers: { accessToken: localStorage.getItem('accessToken') }}
+    axios.post('http://localhost:4000/posts', formData,
+      { headers: { accessToken: localStorage.getItem('accessToken') } }
     ).then((response) => {
       console.log(response);
       navigate('/');
@@ -50,24 +50,24 @@ function CreatePost() {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         initialValues={initialValues}
-      > 
+      >
         <Form className="formContainer" encType="multipart/form-data">
           <h1>Create A Post</h1>
           <label>Title: </label>
-          <ErrorMessage name="title" component="span" className="postErrorMessage"/>
+          <ErrorMessage name="title" component="span" className="postErrorMessage" />
           <Field
             autoComplete="off"
             id="inputCreatePost"
             name="title"
             placeholder="Title..."
-            type = "text"
-            />
+            type="text"
+          />
 
           <label>Post: </label>
-          <ErrorMessage name="postText" component="span" className="postErrorMessage"/>
+          <ErrorMessage name="postText" component="span" className="postErrorMessage" />
           <Field
-            as ="textarea"
-            style = {{ flexDirection: "wrap"}}
+            as="textarea"
+            style={{ flexDirection: "wrap" }}
             autoComplete="off"
             id="inputCreatePost"
             name="postText"
@@ -76,17 +76,17 @@ function CreatePost() {
           />
 
           <label>File:</label>
-          <ErrorMessage name="imageUrl" component="span" className="postErrorMessage"/>
+          <ErrorMessage name="imageUrl" component="span" className="postErrorMessage" />
           <Field
-          id="inputCreatePost"
-          type="file"
-          name="imageUrl"
-          accept="image/*"
-          onChange = {(e) => {
-            setImage(e.target.files[0])
-            setImageUrl(e.target.value) //file input updates on form
-          }}
-          value = {imageUrl}
+            id="inputCreatePost"
+            type="file"
+            name="imageUrl"
+            accept="image/*"
+            onChange={(e) => {
+              setImage(e.target.files[0])
+              setImageUrl(e.target.value) //file input updates on form
+            }}
+            value={imageUrl}
           />
 
           <button type="submit" className="createPostButton"> Create Post</button>
